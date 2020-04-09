@@ -1,9 +1,7 @@
-/*(Copyright)
-
-Microsoft Copyright 2017
-Confidential Information
-
-*/
+/*
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root.
+ */
 #include "RiotCrypt.h"
 
 #define RIOT_MAX_KDF_FIXED_SIZE     RIOT_MAX_KDF_CONTEXT_LENGTH + \
@@ -156,12 +154,12 @@ RiotCrypt_Hmac2(
 
 RIOT_STATUS
 RiotCrypt_DeriveEccKey(
-    RIOT_ECC_PUBLIC    *publicPart,     // OUT: TODO
-    RIOT_ECC_PRIVATE   *privatePart,    // OUT: TODO
-    const void         *srcData,        // IN:  TODO
-    size_t              srcDataSize,    // IN:  TODO
-    const uint8_t      *label,          // IN:  TODO
-    size_t              labelSize       // IN:  TODO
+    RIOT_ECC_PUBLIC    *publicPart,     // OUT: Derived public key
+    RIOT_ECC_PRIVATE   *privatePart,    // OUT: Derived private key
+    const void         *srcData,        // IN:  Initial data for derivation
+    size_t              srcDataSize,    // IN:  Size of the source data in bytes
+    const uint8_t      *label,          // IN:  Label for derivation (may be NULL)
+    size_t              labelSize       // IN:  Size of the label in bytes
 )
 {
     bigval_t    srcVal  = { 0 };
@@ -184,9 +182,9 @@ RiotCrypt_DeriveEccKey(
 
 void
 RiotCrypt_ExportEccPub(
-    RIOT_ECC_PUBLIC     *a,     // IN:  TODO
-    uint8_t             *b,     // OUT: TODO
-    uint32_t            *s      // OUT: TODO
+    RIOT_ECC_PUBLIC     *a,     // IN:  ECC public key to export
+    uint8_t             *b,     // OUT: Buffer to receive the public key
+    uint32_t            *s      // OUT: Pointer to receive the buffer size (may be NULL)
 )
 {
     *b++ = 0x04;
@@ -201,10 +199,10 @@ RiotCrypt_ExportEccPub(
 
 RIOT_STATUS
 RiotCrypt_Sign(
-    RIOT_ECC_SIGNATURE     *sig,        // OUT: TODO
-    const void             *data,       // IN:  TODO
-    size_t                  dataSize,   // IN:  TODO
-    const RIOT_ECC_PRIVATE *key         // IN:  TODO
+    RIOT_ECC_SIGNATURE     *sig,        // OUT: Signature of data
+    const void             *data,       // IN:  Data to sign
+    size_t                  dataSize,   // IN:  Data size in bytes
+    const RIOT_ECC_PRIVATE *key         // IN:  Signing key
 )
 {
     uint8_t digest[RIOT_DIGEST_LENGTH];
@@ -216,10 +214,10 @@ RiotCrypt_Sign(
 
 RIOT_STATUS
 RiotCrypt_SignDigest(
-    RIOT_ECC_SIGNATURE     *sig,            // OUT: TODO
-    const uint8_t          *digest,         // IN:  TODO
-    size_t                  digestSize,     // IN:  TODO
-    const RIOT_ECC_PRIVATE *key             // IN:  TODO
+    RIOT_ECC_SIGNATURE     *sig,            // OUT: Signature of digest
+    const uint8_t          *digest,         // IN:  Digest to sign
+    size_t                  digestSize,     // IN:  Size of the digest in bytes
+    const RIOT_ECC_PRIVATE *key             // IN:  Signing key
 )
 {
     if (digestSize != RIOT_DIGEST_LENGTH) {
@@ -231,10 +229,10 @@ RiotCrypt_SignDigest(
 
 RIOT_STATUS
 RiotCrypt_Verify(
-    const void                 *data,       // IN: TODO
-    size_t                      dataSize,   // IN: TODO
-    const RIOT_ECC_SIGNATURE   *sig,        // IN: TODO
-    const RIOT_ECC_PUBLIC      *key         // IN: TODO
+    const void                 *data,       // IN: Data to verify signature of
+    size_t                      dataSize,   // IN: Size of data in bytes
+    const RIOT_ECC_SIGNATURE   *sig,        // IN: Signature to verify
+    const RIOT_ECC_PUBLIC      *key         // IN: ECC public key of signer
 )
 {
     uint8_t digest[RIOT_DIGEST_LENGTH];
@@ -246,10 +244,10 @@ RiotCrypt_Verify(
 
 RIOT_STATUS
 RiotCrypt_VerifyDigest(
-    const uint8_t              *digest,     // IN: TODO
-    size_t                      digestSize, // IN: TODO
-    const RIOT_ECC_SIGNATURE   *sig,        // IN: TODO
-    const RIOT_ECC_PUBLIC      *key         // IN: TODO
+    const uint8_t              *digest,     // IN: Digest to verify signature of
+    size_t                      digestSize, // IN: Size of the digest
+    const RIOT_ECC_SIGNATURE   *sig,        // IN: Signature to verify
+    const RIOT_ECC_PUBLIC      *key         // IN: ECC public key of signer
 )
 {
     if (digestSize != RIOT_DIGEST_LENGTH) {

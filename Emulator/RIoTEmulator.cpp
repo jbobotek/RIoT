@@ -1,9 +1,7 @@
-/*(Copyright)
-
-Microsoft Copyright 2017
-Confidential Information
-
-*/
+/*
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root.
+ */
 #include "stdafx.h"
 #include <stdint.h>
 #define WIN32_LEAN_AND_MEAN
